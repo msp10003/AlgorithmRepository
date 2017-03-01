@@ -13,19 +13,31 @@ public class Utils {
 		return a.compareTo(b) < 0;
 	}
 	
-	public static void resizeArray(Object[] a, int elems){
+	public static Comparable[] resizeArray(Comparable[] a, int elems){
 		if(elems >= a.length/2){
-			Object[] t = new Object[a.length*2];
+			Comparable[] t = new Comparable[a.length*2];
 			for(int i = 0; i< elems; i++){
 				t[i] = a[i];
 			}
+			a = t;
 		}
 		else if(elems <= a.length/4){
-			Object[] t = new Object[a.length/2];
+			Comparable[] t = new Comparable[a.length/2];
 			for(int i = 0; i< elems; i++){
 				t[i] = a[i];
 			}
+			a = t;
 		}
+		return a;
+	}
+	
+	public static void printArray(Object[] a){
+		System.out.println("");
+		for (int i = 0; i < a.length; i++)
+		{
+			System.out.print(a[i]+" ");
+		}
+		System.out.println("");
 	}
 
 }

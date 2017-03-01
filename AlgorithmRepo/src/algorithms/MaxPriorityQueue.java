@@ -15,35 +15,42 @@ public class MaxPriorityQueue<Key extends Comparable<Key>>{
 		
 	}
 	
-	public void insert(Key v){
+	public void insert(Key v)
+	{
 		N++;
-		Utils.resizeArray(pq, N+1);
+		pq = (Key[]) Utils.resizeArray(pq, N+1);
 		pq[N] = v;
 		swim(N);
 	}
 	
-	public Key max(){
+	public Key max()
+	{
 		return pq[1];
 	}
 	
-	public Key delMax(){
+	public Key delMax()
+	{
 		Key max = pq[1];
 		pq[1]= pq[N];
 		pq[N] = null;
+		N--;
 		sink();
-		Utils.resizeArray(pq, --N);
+		pq = (Key[]) Utils.resizeArray(pq, N+1);
 		return max;
 	}
 	
-	public boolean isEmpty(){
+	public boolean isEmpty()
+	{
 		return N == 0;
 	}
 	
-	public int size(){
+	public int size()
+	{
 		return N;
 	}
 	
-	private void sink(){
+	private void sink()
+	{
 		int k = 1;
 		
 		while(2*k <= N){
@@ -57,7 +64,8 @@ public class MaxPriorityQueue<Key extends Comparable<Key>>{
 		}
 	}
 	
-	private void swim(int k){
+	private void swim(int k)
+	{
 		while(k > 1 && less(k/2, k)){
 			exch(k/2, k);
 			k = k/2;
@@ -65,7 +73,8 @@ public class MaxPriorityQueue<Key extends Comparable<Key>>{
 	}
 	
 	/*alternative way to do this a swim uses recursion*/
-	private void swim_r(int k){
+	private void swim_r(int k)
+	{
 		//base cases
 		if(k/2 == 1) return;
 		else if (!less(k/2, k)) return;
@@ -75,11 +84,13 @@ public class MaxPriorityQueue<Key extends Comparable<Key>>{
 	}
 	
 	
-	private boolean less(int i, int j){
+	private boolean less(int i, int j)
+	{
 		return pq[i].compareTo(pq[j]) < 0;
 	}
 	
-	private void exch(int i, int j){
+	private void exch(int i, int j)
+	{
 		Key temp = pq[i];
 		pq[i] = pq[j];
 		pq[j] = temp;
