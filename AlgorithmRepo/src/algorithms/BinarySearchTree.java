@@ -18,7 +18,7 @@ public class BinarySearchTree<Key extends Comparable<Key>, Value>
 		if(cmp > 0){
 			node.right = put(node.right, key, val);
 		}
-		else if(cmp > 0){
+		else if(cmp < 0){
 			node.left = put(node.left, key, val);
 		}
 		else{
@@ -47,7 +47,7 @@ public class BinarySearchTree<Key extends Comparable<Key>, Value>
 		if(cmp > 0){
 			return get(node.right, key);
 		}
-		else if(cmp > 0){
+		else if(cmp < 0){
 			return get(node.left, key);
 		}
 		else{
@@ -55,9 +55,54 @@ public class BinarySearchTree<Key extends Comparable<Key>, Value>
 		}
 	}
 	
+	/**
+	 * Hibbard Deletion
+	 * @param key
+	 */
 	public void delete(Key key)
 	{
+		delete(root, key);
+	}
+	
+	private Node delete(Node node, Key key)
+	{
+		if(node == null){
+			return null;
+		}
+		int cmp = key.compareTo(node.key);
+		if(cmp < 0){
+			return delete(node.left, key);
+		}
+		else if(cmp > 0){
+			return delete(node.right, key);
+		}
 		
+	}
+	
+	public Key min()
+	{
+		return min(root).key;
+	}
+	
+	private Node min(Node node)
+	{
+		if(node == null){
+			return node;
+		}
+		return min(node.left);
+	}
+	
+	public Key max()
+	{
+		return max(root).key;
+	}
+	
+	private Node max(Node node)
+	{
+		if(node == null){
+			return node;
+		}
+		return max(node.right);
 	}
 	
 	/**
