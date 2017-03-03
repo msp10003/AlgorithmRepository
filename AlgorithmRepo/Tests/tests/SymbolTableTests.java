@@ -26,7 +26,17 @@ public class SymbolTableTests {
 		bst.put('Q', 32);
 		bst.put('Y', 9);
 		
-		System.out.println(bst.get('G'));
+		System.out.println(bst.size());
+		
+		bst.deleteMin();
+		System.out.println(bst.size());
+		System.out.println(bst.min().toString());
+		bst.delete('S');
+		System.out.println(bst.get('S'));
+		System.out.println(bst.get('Q'));
+		bst.delete('J');
+		System.out.println(bst.get('Z'));
+		System.out.println(bst.size());
 	}
 	
 }

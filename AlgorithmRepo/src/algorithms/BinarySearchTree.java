@@ -54,29 +54,56 @@ public class BinarySearchTree<Key extends Comparable<Key>, Value>
 			return node.val;
 		}
 	}
-	
+
 	/**
 	 * Hibbard Deletion
 	 * @param key
 	 */
 	public void delete(Key key)
 	{
-		delete(root, key);
+		root = delete(root, key);
 	}
-	
+
 	private Node delete(Node node, Key key)
 	{
 		if(node == null){
 			return null;
 		}
+		//search for the key
 		int cmp = key.compareTo(node.key);
-		if(cmp < 0){
-			return delete(node.left, key);
+		if(cmp > 0){ node.right = delete(node.right, key);}
+		else if(cmp < 0){ node.left = delete(node.left, key);}
+		//we found the key
+		else{
+			//case 1: no right child
+			if(node.right == null){ return node.left;}
+			//case 2: no left child
+			if(node.left == null){ return node.right;}
+			
+			//case 3: two children
+			Node t = node;
+			node = min(t.right);
+			node.right = deleteMin(t.right);
+			node.left = t.left;
 		}
-		else if(cmp > 0){
-			return delete(node.right, key);
+		//update subtree size
+		node.setSize(size(node.left) + size(node.right)+1);
+		return node;
+	}
+	
+	public void deleteMin()
+	{
+		root = deleteMin(root);
+	}
+	
+	private Node deleteMin(Node node)
+	{
+		if(node.left == null){
+			return node.right;
 		}
-		
+		node.left = deleteMin(node.left);
+		node.setSize(size(node.left) + size(node.right)+1);
+		return node;
 	}
 	
 	public Key min()
@@ -86,7 +113,7 @@ public class BinarySearchTree<Key extends Comparable<Key>, Value>
 	
 	private Node min(Node node)
 	{
-		if(node == null){
+		if(node.left == null){
 			return node;
 		}
 		return min(node.left);
@@ -99,7 +126,7 @@ public class BinarySearchTree<Key extends Comparable<Key>, Value>
 	
 	private Node max(Node node)
 	{
-		if(node == null){
+		if(node.right == null){
 			return node;
 		}
 		return max(node.right);
