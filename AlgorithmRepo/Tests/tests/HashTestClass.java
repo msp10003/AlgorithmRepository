@@ -31,6 +31,16 @@ public class HashTestClass {
 		return h;
 	}
 	
+	public String getName()
+	{
+		return this.name;
+	}
+	
+	public int getValue()
+	{
+		return this.value;
+	}
+	
 	@Override
 	public boolean equals(Object x)
 	{
