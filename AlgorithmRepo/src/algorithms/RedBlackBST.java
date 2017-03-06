@@ -9,13 +9,16 @@ public class RedBlackBST<Key extends Comparable<Key>, Value>
 	public void put(Key key, Value val)
 	{
 		root = put(root, key, val);
+		root.color = BLACK;
 	}
 	
 	private Node put(Node node, Key key, Value val)
 	{
+		//search for the right spot
 		if(node == null){
-			return new Node(key, val);
+			return new Node(key, val, RED);
 		}
+		//if we aren't there, go right or left
 		int cmp = key.compareTo(node.key);
 		if(cmp > 0){
 			node.right = put(node.right, key, val);
@@ -26,6 +29,12 @@ public class RedBlackBST<Key extends Comparable<Key>, Value>
 		else{
 			node.val = val;
 		}
+		
+		//handle the transformation cases
+		if(!isRed(node.left) && isRed(node.right)){ node = rotateLeft(node);}
+		if(isRed(node.left) && isRed(node.left.left)){ node = rotateRight(node);}
+		if(isRed(node.left) && isRed(node.right)){ flipColors(node);}
+		
 		node.setSize(size(node.left)+size(node.right)+1);
 		return node;
 	}
@@ -134,16 +143,6 @@ public class RedBlackBST<Key extends Comparable<Key>, Value>
 		return max(node.right);
 	}
 	
-	/**
-	 * Lazy implementation that just sets the key's value
-	 * to null
-	 * @param key
-	 */
-	public void deleteLazy(Key key)
-	{
-		put(key, null);
-	}
-	
 	public boolean contains(Key key)
 	{
 		return get(key) != null;
@@ -167,6 +166,47 @@ public class RedBlackBST<Key extends Comparable<Key>, Value>
 		return node.getSize();
 	}
 	
+	public boolean isRed(Node node)
+	{
+		if(node == null){
+			return false;
+		}
+		return node.color == RED;
+	}
+	
+	private Node rotateLeft(Node h)
+	{
+		Node x = h.right;
+		h.right = x.left;
+		x.left = h;
+		x.color = h.color;
+		h.color = RED;
+        h.N = size(h.left) + size(h.right) + 1;
+		return x;
+	}
+	
+	private Node rotateRight(Node h)
+	{
+		Node x = h.left;
+		h.left = x.right;
+		x.right = h;
+		x.color = h.color;
+		h.color = RED;
+		h.setSize(size(h.left) + size(h.right)+1);
+		return x;
+	}
+	
+	/**
+	 * splits temporary 4-node
+	 * @param h
+	 */
+	private void flipColors(Node h)
+	{
+		h.color = RED;
+		h.left.color = BLACK;
+		h.right.color = BLACK;
+	}
+	
 	/*
 	public Iterable<Key> keys()
 	{
@@ -179,12 +219,21 @@ public class RedBlackBST<Key extends Comparable<Key>, Value>
 		private Value val;
 		private Node left, right;
 		private int N;
+		boolean color;
 		
 		public Node(Key key, Value val)
 		{
 			this.key = key;
 			this.val = val;
 			N = 1;
+		}
+		
+		public Node(Key key, Value val, boolean color)
+		{
+			this.key = key;
+			this.val = val;
+			N = 1;
+			this.color = color;
 		}
 		
 		public void setSize(int n)
@@ -196,5 +245,6 @@ public class RedBlackBST<Key extends Comparable<Key>, Value>
 		{
 			return N;
 		}
+		
 	}
 }
