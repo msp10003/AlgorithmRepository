@@ -35,5 +35,13 @@ public class DepthFirstPaths
 	{
 		if(!hasPath(v)) return null;
 		
+		java.util.Stack<Integer> path = new java.util.Stack<Integer>();
+		int x = v;
+		while(x != s){
+			path.push(x);
+			x = edgeTo[x];
+		}
+		path.push(s);
+		return path;
 	}
 }
