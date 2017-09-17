@@ -16,6 +16,9 @@ public class MergeSort {
 		int mid = lo + (hi - lo) / 2;		//calculate the middle ptr for merge
 		sort(a, aux, lo, mid);			//sort the left side
 		sort(a, aux, mid + 1, hi);		//sort the right side
+		if (!less(aux[mid+1], aux[mid])){	//improvement: if one of the array halves is already sorted, skip 
+			return;
+		}
 		merge(a, aux, lo, mid, hi);		//merge the sorted arrays together
 	}
 	
